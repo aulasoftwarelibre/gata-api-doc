@@ -1,0 +1,347 @@
+swagger: '2.0'
+schemes:
+  - http
+  - https
+host: consejo-eps.uco.es
+basePath: /gata/api
+info:
+  title: GATA API
+  version: 0.0.1
+  x-logo:
+    url: 'https://aulasoftwarelibre.github.io/gata-api-doc/logo.png'
+tags:
+  - name: Role
+    description: Operations about roles
+  - name: Scope
+    description: Operations about scopes
+  - name: User
+    description: Operations about users
+paths:
+  /api/roles:
+    post:
+      tags:
+        - Role
+      operationId: postRoleCollection
+      consumes:
+        - application/ld+json
+        - application/json
+        - text/html
+      produces:
+        - application/ld+json
+        - application/json
+        - text/html
+      summary: Creates a Role resource.
+      parameters:
+        - name: role
+          in: body
+          description: The new Role resource
+          schema:
+            $ref: '#/definitions/Role'
+      responses:
+        '201':
+          description: Role resource created
+          schema:
+            $ref: '#/definitions/Role'
+        '400':
+          description: Invalid input
+        '404':
+          description: Resource not found
+  '/api/roles/{id}':
+    get:
+      tags:
+        - Role
+      operationId: getRoleItem
+      produces:
+        - application/ld+json
+        - application/json
+        - text/html
+      summary: Retrieves a Role resource.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Role resource response
+          schema:
+            $ref: '#/definitions/Role'
+        '404':
+          description: Resource not found
+    delete:
+      tags:
+        - Role
+      operationId: deleteRoleItem
+      summary: Removes the Role resource.
+      responses:
+        '204':
+          description: Role resource deleted
+        '404':
+          description: Resource not found
+      parameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+  /api/scopes:
+    get:
+      tags:
+        - Scope
+      operationId: getScopeCollection
+      produces:
+        - application/ld+json
+        - application/json
+        - text/html
+      summary: Retrieves the collection of Scope resources.
+      responses:
+        '200':
+          description: Scope collection response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Scope'
+      parameters:
+        - name: page
+          in: query
+          required: false
+          type: integer
+          description: The collection page number
+    post:
+      tags:
+        - Scope
+      operationId: postScopeCollection
+      consumes:
+        - application/ld+json
+        - application/json
+        - text/html
+      produces:
+        - application/ld+json
+        - application/json
+        - text/html
+      summary: Creates a Scope resource.
+      parameters:
+        - name: scope
+          in: body
+          description: The new Scope resource
+          schema:
+            $ref: '#/definitions/Scope'
+      responses:
+        '201':
+          description: Scope resource created
+          schema:
+            $ref: '#/definitions/Scope'
+        '400':
+          description: Invalid input
+        '404':
+          description: Resource not found
+  '/api/scopes/{id}':
+    get:
+      tags:
+        - Scope
+      operationId: getScopeItem
+      produces:
+        - application/ld+json
+        - application/json
+        - text/html
+      summary: Retrieves a Scope resource.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Scope resource response
+          schema:
+            $ref: '#/definitions/Scope'
+        '404':
+          description: Resource not found
+    delete:
+      tags:
+        - Scope
+      operationId: deleteScopeItem
+      summary: Removes the Scope resource.
+      responses:
+        '204':
+          description: Scope resource deleted
+        '404':
+          description: Resource not found
+      parameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    put:
+      tags:
+        - Scope
+      operationId: putScopeItem
+      consumes:
+        - application/ld+json
+        - application/json
+        - text/html
+      produces:
+        - application/ld+json
+        - application/json
+        - text/html
+      summary: Replaces the Scope resource.
+      parameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: scope
+          in: body
+          description: The updated Scope resource
+          schema:
+            $ref: '#/definitions/Scope'
+      responses:
+        '200':
+          description: Scope resource updated
+          schema:
+            $ref: '#/definitions/Scope'
+        '400':
+          description: Invalid input
+        '404':
+          description: Resource not found
+  '/api/scopes/{id}/roles':
+    get:
+      tags:
+        - Role
+        - Scope
+      operationId: api_scopes_roles_get_subresource
+      produces:
+        - application/ld+json
+        - application/json
+        - text/html
+      summary: Retrieves the collection of Role resources.
+      responses:
+        '200':
+          description: Role collection response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Role'
+        '404':
+          description: Resource not found
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+  /api/users:
+    get:
+      tags:
+        - User
+      operationId: getUserCollection
+      produces:
+        - application/ld+json
+        - application/json
+        - text/html
+      summary: Retrieves the collection of User resources.
+      responses:
+        '200':
+          description: User collection response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+      parameters:
+        - name: page
+          in: query
+          required: false
+          type: integer
+          description: The collection page number
+    post:
+      tags:
+        - User
+      operationId: postUserCollection
+      consumes:
+        - application/ld+json
+        - application/json
+        - text/html
+      produces:
+        - application/ld+json
+        - application/json
+        - text/html
+      summary: Creates a User resource.
+      parameters:
+        - name: user
+          in: body
+          description: The new User resource
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: User resource created
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          description: Invalid input
+        '404':
+          description: Resource not found
+  '/api/users/{id}':
+    get:
+      tags:
+        - User
+      operationId: getUserItem
+      produces:
+        - application/ld+json
+        - application/json
+        - text/html
+      summary: Retrieves a User resource.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User resource response
+          schema:
+            $ref: '#/definitions/User'
+        '404':
+          description: Resource not found
+definitions:
+  Role:
+    type: object
+    description: Roles
+    properties:
+      id:
+        readOnly: true
+        type: string
+      scopeId:
+        readOnly: true
+        type: string
+      name:
+        readOnly: true
+        type: string
+  Scope:
+    type: object
+    description: Scopes
+    properties:
+      id:
+        readOnly: true
+        type: string
+      name:
+        type: string
+      shortName:
+        readOnly: true
+        type: string
+      roles:
+        readOnly: true
+        type: array
+        items:
+          $ref: '#/definitions/Role'
+  User:
+    type: object
+    description: Users
+    properties:
+      username:
+        readOnly: true
+        type: string
+      email:
+        readOnly: true
+        type: string
+      id:
+        readOnly: true
+        type: string
