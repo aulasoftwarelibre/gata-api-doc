@@ -9,7 +9,7 @@ info:
   title: 'GATA API'
   version: 0.0.1
   x-logo:
-    url: '/logo.png'
+    url: 'https://aulasoftwarelibre.github.io/gata-api-doc/logo.png'
 tags:
   - name: Role
     description: Operations about roles
