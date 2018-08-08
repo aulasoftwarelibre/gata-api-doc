@@ -1,246 +1,348 @@
-# This is an **example** API to demontstrate features of OpenAPI specification.
-# It doesn't cover all OpenAPI features. For more full example check out: https://github.com/APIs-guru/petstore_extended
-
+---
 swagger: '2.0'
-# You should specify common part of your endpoints in the following format:
-#   <schemes>://<host><basepath>
 schemes:
-  - http # Remove if your API doesn't support HTTP
-  - https # Remove if your API donsn't support HTTPS
-host: example.com # Replace with your hostname. You can also specify port e.g. example.com:777
-basePath: /api/v1 # Replace with your basePath. Note: SHOULD begin with '/'.
+  - http
+  - https
+host: consejo-eps.uco.es
+basePath: "/gata/api"
 info:
-  # Describe your API here, you can use GFM (https://guides.github.com/features/mastering-markdown) here
-  description: |
-    This is an **example** API to demontstrate features of OpenAPI specification
-    # Introduction
-    This specification is intended to to be a good starting point for describint your API in 
-    [OpenAPI/Swagger format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md).
-    It also demonstrates features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo) tool and 
-    [ReDoc](https://github.com/Rebilly/ReDoc) documentation engine. So beyond the standard OpenAPI syntax we use a few 
-    [vendor extensions](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md).
-    
-    # OpenAPI Specification
-    The goal of The OpenAPI Specification is to define a standard, language-agnostic interface to REST APIs which
-    allows both humans and computers to discover and understand the capabilities of the service without access to source
-    code, documentation, or through network traffic inspection. When properly defined via OpenAPI, a consumer can 
-    understand and interact with the remote service with a minimal amount of implementation logic. Similar to what
-    interfaces have done for lower-level programming, OpenAPI removes the guesswork in calling the service.
-
-  version: '1.0.0' # Your API version
-  # It can be any string but it is better to use semantic versioning: http://semver.org/
-  # Warning: OpenAPI require version to be string, but without quotation YAML can recognize it as number.
-
-  title: Example.com # Replace with your API title
-  # Keep it simple. Don't add "API" or verison at the end of the string.
-
-  termsOfService: 'https://example.com/terms/' # [Optional] Replace with an URL to your ToS
-  contact:
-    email: contact@example.com # [Optional] Replace with your contact email
-    url: 'http://example.com/contact' # [Optional] Replace with link to your contact form
-  license:
-    name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  title: 'GATA API'
+  version: 0.0.1
   x-logo:
-    url: 'https://apis.guru/openapi-template/logo.png'
-externalDocs:
-  description: Find out how to create Github repo for your OpenAPI spec.
-  url: 'https://github.com/Rebilly/generator-openapi-repo'
-produces:
-  # List of mime types your API endpoins can return.
-  # This is a global default. You can OVERWRITE it in each specific operation.
-  # Remove the ones not used in your API
-  - application/json
-  - application/xml
-  - text/csv
-  # you can add any mime type your API produces to the list
-consumes:
-  # List of mime types your API endpoins consumes.
-  # This is a global default. You can OVERWRITE it in each specific operation.
-  # Remove the ones not supported by your API
-  - application/json
-  - application/xml
-  # you can add any mime type your API consumes to the list
-
-# A list of tags used by the specification with additional metadata.
-# The order of the tags can be used to reflect on their order by the parsing tools.
+    url: '/logo.png'
 tags:
-  - name: Echo
-    description: Example echo operations
+  - name: Role
+    description: Operations about roles
+  - name: Scope
+    description: Operations about scopes
   - name: User
-    description: Operations about user
-# Security scheme definitions that can be used across the specification.
-securityDefinitions:
-  main_auth: # security definition name (you can name it as you want)
-    type: oauth2 # authorization type, one of: oauth2, basic, apiKey
-    # the following options are specific to oauth2 type
-    authorizationUrl: 'http://example.com/api/oauth/dialog'
-    flow: implicit
-    scopes:
-      'read:users': read users info
-      'write:users': modify or remove users
-  api_key: # security definition name (you can name it as you want)
-    type: apiKey
-    # The following options are specific to apiKey type
-    in: header # Where API key will be passed: header or query
-    name: api_key # API key paramteer name
-  basic_auth: # security definition name (you can name it as you want)
-    type: basic
-
-# Holds the relative paths to the individual endpoints. The path is appended to the
-# basePath in order to construct the full URL. 
+    description: Operations about users
 paths:
-  '/users/{username}': # path parameter in curly braces
-    # documentation for GET operation for this path
-    
-    # parameters list that are used with each operation for this path
-    parameters:
-      - name: pretty_print
-        in: query # place where paramter is passed: path, header, query or body, formData
-        description: Pretty print response
-        # type of the paramter: string, number, integer, boolean, array
-        type: boolean
-    get:
-      tags:
-        - User
-      
-      # summary is up to 120 symbold but we recommend to be shortest as possible
-      summary: Get user by user name
-      
-      # you can use GFM in operation description too: https://guides.github.com/features/mastering-markdown
-      description: | 
-        Some description of the operation. 
-        You can use `markdown` here.
-      
-      # operationId should be unique across the whole specification
-      operationId: getUserByName
-      
-      # list of parameters for the operation
-      parameters:
-        - name: username
-          in: path
-          description: 'The name that needs to be fetched'
-          required: true
-          type: string
-        - name: with_email
-          in: query
-          description: Filter users without email
-          type: boolean
-      
-      # security schemas applied to this operation
-      security:
-        - main_auth:
-          - 'read:users' # for auth2 provide list of scopes here
-        - api_key: []
-      # overwriting default global produces
-      produces:
-        - application/json
-      responses: # list of responses
-        '200':
-          description: Success
-          schema: # response schema can be specified for each response
-            $ref: '#/definitions/User'
-          examples:
-          # repsonse samples for each type operation produces
-            application/json:
-              username: user1
-              email: user@example.com
-        '403':
-          description: Forbidden
-        '404':
-          description: User not found
-    # documentation for PUT operation for this path
-    put:
-      tags:
-        - User
-      summary: Updated user
-      description: This can only be done by the logged in user.
-      operationId: updateUser
-      produces:
-        - application/json
-      parameters:
-        - name: username
-          in: path
-          description: The name that needs to be updated
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Updated user object
-          required: true
-          # for body parameter you should specify request schema instead of type
-          schema:
-            $ref: '#/definitions/User'
-      security:
-        - main_auth:
-          - 'write:users'
-      responses:
-        '200':
-          description: OK
-        '400':
-          description: Invalid user supplied
-        '404':
-          description: User not found
-  
-  '/echo':
+  "/api/roles":
     post:
       tags:
-        - Echo
-      summary: Echo test
-      description: Receive the exact message you've sent
-      operationId: echo
+      - Role
+      operationId: postRoleCollection
+      consumes:
+      - application/ld+json
+      - application/json
+      - text/html
+      produces:
+      - application/ld+json
+      - application/json
+      - text/html
+      summary: Creates a Role resource.
       parameters:
-        - name: message
-          in: body
-          description: 'Echo payload'
-          required: true
+      - name: role
+        in: body
+        description: The new Role resource
+        schema:
+          "$ref": "#/definitions/Role"
+      responses:
+        '201':
+          description: Role resource created
           schema:
-            type: string
-            example: 'Hello world!'
-      security:
-        - api_key: []
+            "$ref": "#/definitions/Role"
+        '400':
+          description: Invalid input
+        '404':
+          description: Resource not found
+  "/api/roles/{id}":
+    get:
+      tags:
+      - Role
+      operationId: getRoleItem
+      produces:
+      - application/ld+json
+      - application/json
+      - text/html
+      summary: Retrieves a Role resource.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
       responses:
         '200':
-          description: 'OK'
-          examples:
-            'application/json': 'Hello world!'
+          description: Role resource response
           schema:
-            type: string
-          # docuemnt headers for this repsonse
-          headers:
-            X-Rate-Limit: # Header name
-              type: integer # Header value type
-              format: int32 # Header value format
-              description: calls per hour allowed by the user
-            X-Expires-After:
-              type: string
-              format: date-time
-              description: date in UTC when token expires
-# An object to hold data types that can be consumed and produced by operations.
-# These data types can be primitives, arrays or models.
+            "$ref": "#/definitions/Role"
+        '404':
+          description: Resource not found
+    delete:
+      tags:
+      - Role
+      operationId: deleteRoleItem
+      summary: Removes the Role resource.
+      responses:
+        '204':
+          description: Role resource deleted
+        '404':
+          description: Resource not found
+      parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+  "/api/scopes":
+    get:
+      tags:
+      - Scope
+      operationId: getScopeCollection
+      produces:
+      - application/ld+json
+      - application/json
+      - text/html
+      summary: Retrieves the collection of Scope resources.
+      responses:
+        '200':
+          description: Scope collection response
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Scope"
+      parameters:
+      - name: page
+        in: query
+        required: false
+        type: integer
+        description: The collection page number
+    post:
+      tags:
+      - Scope
+      operationId: postScopeCollection
+      consumes:
+      - application/ld+json
+      - application/json
+      - text/html
+      produces:
+      - application/ld+json
+      - application/json
+      - text/html
+      summary: Creates a Scope resource.
+      parameters:
+      - name: scope
+        in: body
+        description: The new Scope resource
+        schema:
+          "$ref": "#/definitions/Scope"
+      responses:
+        '201':
+          description: Scope resource created
+          schema:
+            "$ref": "#/definitions/Scope"
+        '400':
+          description: Invalid input
+        '404':
+          description: Resource not found
+  "/api/scopes/{id}":
+    get:
+      tags:
+      - Scope
+      operationId: getScopeItem
+      produces:
+      - application/ld+json
+      - application/json
+      - text/html
+      summary: Retrieves a Scope resource.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        '200':
+          description: Scope resource response
+          schema:
+            "$ref": "#/definitions/Scope"
+        '404':
+          description: Resource not found
+    delete:
+      tags:
+      - Scope
+      operationId: deleteScopeItem
+      summary: Removes the Scope resource.
+      responses:
+        '204':
+          description: Scope resource deleted
+        '404':
+          description: Resource not found
+      parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+    put:
+      tags:
+      - Scope
+      operationId: putScopeItem
+      consumes:
+      - application/ld+json
+      - application/json
+      - text/html
+      produces:
+      - application/ld+json
+      - application/json
+      - text/html
+      summary: Replaces the Scope resource.
+      parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+      - name: scope
+        in: body
+        description: The updated Scope resource
+        schema:
+          "$ref": "#/definitions/Scope"
+      responses:
+        '200':
+          description: Scope resource updated
+          schema:
+            "$ref": "#/definitions/Scope"
+        '400':
+          description: Invalid input
+        '404':
+          description: Resource not found
+  "/api/scopes/{id}/roles":
+    get:
+      tags:
+      - Role
+      - Scope
+      operationId: api_scopes_roles_get_subresource
+      produces:
+      - application/ld+json
+      - application/json
+      - text/html
+      summary: Retrieves the collection of Role resources.
+      responses:
+        '200':
+          description: Role collection response
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Role"
+        '404':
+          description: Resource not found
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+  "/api/users":
+    get:
+      tags:
+      - User
+      operationId: getUserCollection
+      produces:
+      - application/ld+json
+      - application/json
+      - text/html
+      summary: Retrieves the collection of User resources.
+      responses:
+        '200':
+          description: User collection response
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/User"
+      parameters:
+      - name: page
+        in: query
+        required: false
+        type: integer
+        description: The collection page number
+    post:
+      tags:
+      - User
+      operationId: postUserCollection
+      consumes:
+      - application/ld+json
+      - application/json
+      - text/html
+      produces:
+      - application/ld+json
+      - application/json
+      - text/html
+      summary: Creates a User resource.
+      parameters:
+      - name: user
+        in: body
+        description: The new User resource
+        schema:
+          "$ref": "#/definitions/User"
+      responses:
+        '201':
+          description: User resource created
+          schema:
+            "$ref": "#/definitions/User"
+        '400':
+          description: Invalid input
+        '404':
+          description: Resource not found
+  "/api/users/{id}":
+    get:
+      tags:
+      - User
+      operationId: getUserItem
+      produces:
+      - application/ld+json
+      - application/json
+      - text/html
+      summary: Retrieves a User resource.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        '200':
+          description: User resource response
+          schema:
+            "$ref": "#/definitions/User"
+        '404':
+          description: Resource not found
 definitions:
-  Email:
-    description: User email address
-    type: string
-    format: email
-    example: john.smith@example.com
+  Role:
+    type: object
+    description: Roles
+    properties:
+      id:
+        readOnly: true
+        type: string
+      scopeId:
+        readOnly: true
+        type: string
+      name:
+        readOnly: true
+        type: string
+  Scope:
+    type: object
+    description: Scopes
+    properties:
+      id:
+        readOnly: true
+        type: string
+      name:
+        type: string
+      shortName:
+        readOnly: true
+        type: string
+      roles:
+        readOnly: true
+        type: array
+        items:
+          "$ref": "#/definitions/Role"
   User:
     type: object
+    description: Users
     properties:
       username:
-        description: User supplied username
+        readOnly: true
         type: string
-        minLength: 4
-        example: John78
-      firstName:
-        description: User first name
-        type: string
-        minLength: 1
-        example: John
-      lastName:
-        description: User last name
-        type: string
-        minLength: 1
-        example: Smith
       email:
-        $ref: '#/definitions/Email'
+        readOnly: true
+        type: string
+      id:
+        readOnly: true
+        type: string
